@@ -7,7 +7,7 @@ const vapiTyping = document.getElementById("vapiTyping");
 const vapiStatusMessage = document.getElementById("vapiStatusMessage");
 const chatWindow = document.getElementById("chat");
 
-const vapi = new Vapi("YOUR-PUBLIC-VAPI-API-KEY");
+const vapi = new Vapi("e18d639c-56d3-4c0f-a2f5-5a42a29e0ccd");
 
 let connected = false;
 let assistantIsSpeaking = false;
