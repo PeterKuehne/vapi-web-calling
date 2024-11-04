@@ -1,10 +1,11 @@
 const path = require("path");
 
 module.exports = {
+  mode: "development", // oder "production" für Produktionsumgebung
   entry: "./src/index.js", // the main entry file for your application
   output: {
     filename: "bundle.js", // the output bundle file name
-    path: path.resolve(__dirname, ""), // path to output folder
+    path: path.resolve(__dirname, "dist"), // path to output folder
   },
   module: {
     rules: [
@@ -20,4 +21,7 @@ module.exports = {
       },
     ],
   },
+  externals: {
+    jquery: 'jQuery'
+  }
 };

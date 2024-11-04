@@ -1,6 +1,6 @@
 {
     "dependencies": {
-      "@vapi-ai/web": "^1.1.3"
+      "@vapi-ai/web": "latest"
     },
     "devDependencies": {
       "@babel/core": "^7.24.5",
@@ -10,7 +10,8 @@
       "webpack-cli": "^5.1.4"
     },
     "scripts": {
-      "build": "webpack"
+      "build": "webpack",
+      "dev": "webpack --watch --mode development"
     }
   }
   
