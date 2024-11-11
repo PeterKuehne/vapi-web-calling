@@ -19,6 +19,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.json$/,
+        type: 'json'  // Fügt Unterstützung für JSON-Dateien hinzu
+      }
     ],
   },
   externals: {

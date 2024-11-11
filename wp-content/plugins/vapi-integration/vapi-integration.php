@@ -40,15 +40,6 @@ function enqueue_vapi_styles() {
             max-width: 200px;
             line-height: 1.4;
         }
-        .chatSection {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 200px;
-            height: 600px;
-            position: relative;
-        }
         #callWithVapi {
             display: flex;
             align-items: center;
@@ -58,53 +49,20 @@ function enqueue_vapi_styles() {
             cursor: pointer;
             width: 100px;
             height: 100px;
+            box-shadow: none;
+            transition: all 0.1s ease-in-out;
+            position: relative;
+            z-index: 10;
         }
         #callWithVapi svg {
             width: 40px;
             fill: #fff;
         }
         #callWithVapi.connected {
-            background-color: #0f8912;
+            background-color: rgb(4,56,244);
         }
         #callWithVapi.disconnected {
             background-color: #858585;
-        }
-        #vapiTyping {
-            width: 100%;
-            min-height: 95px;
-            max-height: 95px;
-            background: #031534;
-            border: none;
-            border-radius: 10px;
-            color: #d2d2d2;
-            padding: 20px;
-            flex-shrink: 0;
-        }
-        #chat {
-            z-index: 99999;
-            width: 100%;
-            height: 300px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 0;
-        }
-        #chat .message {
-            padding: 5px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-        }
-        #chat .user {
-            background-color: #0f8912;
-            text-align: right;
-            margin-left: 30px;
-        }
-        #chat .assistant {
-            background-color: #4b9cd3;
-            text-align: left;
-            margin-right: 30px;
         }
         
         /* Mobile Styles */
@@ -113,25 +71,52 @@ function enqueue_vapi_styles() {
                 position: relative;
                 top: 0;
                 left: 0;
-                transform: none;
+                right: 0;
                 width: 90%;
                 margin: 20px auto;
-                gap: 20px;
+                gap: 10px;
+                z-index: 9999;
             }
-            .chatSection {
-                width: 100%;
+            
+            .buttonSection {
+                gap: 5px;
             }
-            #chat {
-                height: 300px;
-            }
-            #vapiTyping {
+            
+            #callWithVapi {
+                width: 60px;
                 height: 60px;
+            }
+            
+            #callWithVapi svg {
+                width: 25px;
+            }
+            
+            .buttonText {
+                font-size: 12px;
+                margin-top: 3px;
+            }
+        }
+        
+        /* Noch kleinere Bildschirme */
+        @media (max-width: 480px) {
+            .callWrapper {
+                width: 95%;
+                margin: 15px auto;
+            }
+            
+            #callWithVapi {
+                width: 50px;
+                height: 50px;
+            }
+            
+            #callWithVapi svg {
+                width: 20px;
             }
         }
     ');
 }
-add_action('wp_enqueue_scripts', 'enqueue_vapi_styles');
 
+add_action('wp_enqueue_scripts', 'enqueue_vapi_styles');
 function vapi_interface_shortcode() {
     return '
     <div class="callWrapper">
@@ -143,12 +128,8 @@ function vapi_interface_shortcode() {
             </div>
             <div class="buttonText">Klicken um den Anruf zu starten. Erneut klicken um ihn zu beenden.</div>
         </div>
-        <div class="chatSection">
-            <div id="vapiTyping"></div>
-            <div id="vapiStatusMessage"></div>
-            <div id="chat"></div>
-        </div>
     </div>
     ';
 }
+
 add_shortcode('vapi_interface', 'vapi_interface_shortcode');

@@ -62,27 +62,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Modifiziere den volume-level Event Listener
     vapi.on("volume-level", function (level) {
-        volumeLevel = level; // Level is from 0.0 to 1.0
-
-        // Calculate the spread directly based on the volume level
-        const spread = volumeLevel * maxSpread;
-
-        volumeDisplay.textContent = `Volume: ${volumeLevel.toFixed(3)}`; // Display up to 3 decimal places for simplicity
-
-        // Update the box shadow
-        const callWithVapi = document.getElementById("callWithVapi");
-        callWithVapi.style.boxShadow = `0 0 ${spread}px ${spread / 2}px rgba(58,25,250,0.7)`;
+        try {
+            const callWithVapi = document.getElementById("callWithVapi");
+            if (!callWithVapi) return;
+    
+            const spread = Math.floor(level * 30);
+            
+            if (spread >= 0) {
+                callWithVapi.style.boxShadow = `0 0 ${spread}px ${Math.floor(spread/2)}px rgba(4,56,244,0.7)`;
+            }
+        } catch (error) {
+            console.error("Error in volume-level handler:", error);
+        }
     });
 
-    vapi.on("error", function (error) {
+    vapi.on("call-start", function () {
+    connected = true;
+    updateUI();
+    });
+
+
+    vapi.on("call-end", function () {
         connected = false;
-
-        if (error.error.message) {
-            vapiStatusMessage.textContent = error.error.message;
-        }
-
         updateUI();
+        
+    const callWithVapi = document.getElementById("callWithVapi");
+    if (callWithVapi) {
+        callWithVapi.style.boxShadow = 'none'; // Komplett ohne Schatten
+        // ODER mit grauem Schatten:
+        // callWithVapi.style.boxShadow = '0 0 0px 0px #858585';
+        }
     });
 
     callWithVapi.addEventListener("click", function () {
@@ -136,11 +147,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateUI() {
-        // Update the status
-        statusDisplay.textContent = `Status: ${connected ? "Connected" : "Disconnected"}`;
-
-        // Update the speaker
-        speakerDisplay.textContent = `Speaker: ${assistantIsSpeaking ? "Assistant" : "User"}`;
+        const callWithVapi = document.getElementById("callWithVapi");
+        if (callWithVapi) {
+            // Statt Text zu ändern, nutzen wir CSS-Klassen
+            if (connected) {
+                callWithVapi.classList.add("connected");
+                callWithVapi.classList.remove("disconnected");
+            } else {
+                callWithVapi.classList.remove("connected");
+                callWithVapi.classList.add("disconnected");
+            }
+        }
     }
 
     const assistantOptions = {
